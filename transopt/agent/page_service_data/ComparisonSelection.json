@@ -1,0 +1,8 @@
+{
+    "Refiner": ["box", "ellipse"],
+    "Sampler": ["random", "sobol", "lhs"],
+    "Pretrain": ["deepkernel", "hyperbo"],
+    "Model": ["GP", "MTGP", "MHGP"],
+    "ACF": ["PI", "EI", "LCB"],
+    "Normalizer": ["default"]
+}

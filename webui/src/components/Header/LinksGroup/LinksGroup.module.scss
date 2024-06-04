@@ -1,0 +1,132 @@
+@import '../../../styles/app';
+
+.headerLink {
+  overflow-x: hidden;
+
+  @media (min-width: map_get($grid-breakpoints, lg)) and (min-height: $screen-lg-height), (max-width: map_get($grid-breakpoints, md) - 1px) {
+    font-size: $font-size-base;
+  }
+
+  a {
+    font-size: 14px;
+    font-weight: $font-weight-thin;
+    display: flex;
+    justify-content: left;
+    color: $icon-color;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+
+  &:last-child > a {
+    border-bottom: 1px solid $sidebar-item-border-color;
+  }
+
+  > a {
+    position: relative;
+    align-items: center;
+    padding: $sidebar-item-padding;
+    border-top: 1px solid $sidebar-item-border-color;
+    white-space: nowrap;
+    border-radius: .25rem;
+
+    &:hover {
+      background-color: $sidebar-item-hover-bg-color;
+    }
+  }
+
+  .icon {
+    margin-right: .5rem;
+    max-height: 32px;
+    max-width: 32px;
+    text-align: center;
+  }
+
+  .badge {
+    float: right;
+    line-height: 8px;
+    margin-right: 5px;
+    padding: 7px;
+  }
+}
+
+a.headerLinkActive {
+  font-weight: $font-weight-semi-bold;
+  font-size: 16px;
+
+  .icon {
+    background-color: $icon-color;
+    svg {
+      fill: #0D2B47;
+    }
+  }
+}
+
+.headerLabel {
+  font-weight: 600;
+  color: theme-color('warning');
+}
+
+.collapsed .caret {
+  transform: rotate(+90deg);
+}
+
+.caret {
+  position: absolute;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  color: $icon-color;
+  font-weight: $font-weight-bold;
+
+  @include transition(transform 0.3s ease-in-out);
+}
+
+.accordionToggle {
+  position: relative;
+}
+
+.accordionToggle > .caret {
+  top: auto;
+}
+
+.accordionToggle:focus {
+  background-color: $sidebar-item-hover-bg-color;
+}
+
+.panel {
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  border-radius: 0;
+  color: white;
+  background-color: rgba(18, 20, 43, 0.42);
+
+  a.headerLinkActive {
+    font-size: 1rem;
+    font-weight: $font-weight-semi-bold;
+    color: $sidebar-color;
+  }
+
+  ul {
+
+    li {
+      list-style: none;
+    }
+
+    a {
+      padding: $sidebar-sub-item-padding;
+      font-size: $font-size-base;
+      font-weight: $font-weight-normal;
+
+      &:hover {
+        background-color: $sidebar-item-hover-bg-color;
+      }
+    }
+  }
+}
+

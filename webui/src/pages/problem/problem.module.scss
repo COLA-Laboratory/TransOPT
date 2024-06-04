@@ -1,0 +1,21 @@
+@import '../../styles/app';
+
+.root {
+  .overFlow {
+    overflow-x: auto;
+  }
+  
+  .mainTableWidget {
+    :global {
+      .table td {
+        border: none;
+      }
+      
+    }
+  }
+  .chatui {
+    height: 70vh;
+  }
+
+}
+

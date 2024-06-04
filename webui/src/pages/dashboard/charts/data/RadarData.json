@@ -1,0 +1,14 @@
+{
+    "indicator": [
+        { "name": "F1 score", "max": 1 },
+        { "name": "Accuracy", "max": 1 },
+        { "name": "Recall", "max": 1 },
+        { "name": "Root Mean Squared Error", "max": 10 },
+        { "name": "AUC-ROC ", "max": 1 },
+        { "name": "BOA-AUC ", "max": 1 }
+
+      ],
+    "data": [{
+        "value": [0.3, 0.95, 0.5, 2.42639, 0.7, 0.8]
+    }]
+}

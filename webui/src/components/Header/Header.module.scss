@@ -1,0 +1,402 @@
+@import '../../styles/app';
+
+.root {
+  display: flex;
+  justify-content: flex-end !important;
+  @media (max-width: breakpoint-max(sm)) {
+    margin-bottom: 50px;
+  }
+
+  ul > li > a {
+    padding: 0.5rem 12px;
+    @media(max-width: 580px) {
+      padding: 0.5rem 6px;
+    }
+  }
+
+  :global {
+    .alert {
+      height: 30px;
+      width: 275px;
+      display: flex;
+      margin: auto;
+      transition: margin-top 0.2s ease;
+      background: #12142B80;
+      border: none;
+      font-size: 1rem;
+      line-height: 20px;
+      padding: 5px 8px;
+      color: rgba(255, 255, 255, 0.6);
+      border-radius: 10px;
+
+      @media (max-width: 1255px) {
+        display: none !important;
+      }
+    
+      button.close {
+        color: $icon-blue;
+        font-weight: normal;
+        font-size: 18px !important;
+        margin-top: 1px;
+      }
+      .btn-link > svg {
+        vertical-align: bottom;
+      }
+    }
+
+    .input-transparent.form-control {
+      padding-left: $input-btn-padding-x !important;
+    }
+  }
+}
+
+.logo {
+  position: absolute;
+
+  @media (min-height: 940px) {
+    position: fixed;
+  }
+
+  left: 56px;
+  top: 18px;
+  z-index: 1;
+  font-size: 16px;
+  font-weight: normal;
+  color: $white;
+
+  &:hover,
+  &:focus {
+    color: $white;
+  }
+
+
+
+  @media (max-width: breakpoint-max(sm)) {
+    top: 10px;
+    left: 15px;
+
+    strong {
+      display: block;
+    }
+  }
+
+  &.logoHidden {
+    display: none;
+  }
+}
+
+.searchCollapse {
+  display: block;
+
+  @media (max-width: breakpoint-max(sm)) {
+    display: none;
+    position: absolute !important;
+    top: 60px;
+    left: 0;
+    right: 0;
+
+    &:global(.collapsing) {
+      display: block;
+    }
+
+    .navbarForm {
+      width: auto;
+      margin: 0 2.5641%;
+    }
+  }
+  &:global(.collapse) {
+    display: none;
+  }
+}
+
+.navbarForm {
+  padding: 6px 0;
+  margin-left: 10px;
+  width: 200px;
+  transition: width 0.2s ease-in-out;
+
+  .inputAddon {
+    border: none;
+    background-color: transparentize($text-transparent, 0.1);
+    transition: background-color ease-in-out 0.15s;
+  }
+
+  input {
+    font-size: 13px;
+    color: $white;
+    background-color: transparentize($text-transparent, 0.1);
+    border: none;
+    padding: 0.6rem 0.85rem 0.6rem 0;
+    min-height: 30px !important;
+
+    &:focus {
+      box-shadow: $input-box-shadow !important;
+    }
+  }
+}
+
+.navbarFormFocused {
+  width: 240px;
+}
+
+.divider {
+  display: block;
+  width: 1px;
+  margin: 10px 14px;
+  background: $icon-color;
+}
+
+.navItem {
+  font-size: 1.5rem;
+  outline: 0;
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    color: $white !important;
+  }
+
+  :global(.glyphicon),
+  :global(.fa) {
+    vertical-align: baseline;
+  }
+}
+
+.glyphicon {
+  color: #3979F6;
+}
+
+.image {
+  float: left;
+  width: 40px;
+  margin-top: 7px;
+  border-radius: 50%;
+}
+
+.imageAccount {
+  width: 50px;
+  margin-right: 5px;
+}
+
+.dropdownMenu {
+  background: $main-background !important;
+  box-shadow: 0 0px 40px 2px rgba(#020202,.5);
+  border: none;
+  color: $white;
+
+  &.messages {
+    left: -50px !important;
+  }
+
+  @media (max-width: breakpoint-max(xs)) {
+    right: auto;
+    left: -100px;
+  }
+
+  &::after {
+    left: auto !important;
+    right: 15px;
+
+    @media (max-width: breakpoint-max(xs)) {
+      right: 112px;
+    }
+  }
+
+  :global(.show) > & {
+    display: block;
+  }
+
+  button:hover {
+    background-color: $widget-bg;
+  }
+}
+
+.messages {
+  button {
+    display: flex;
+    height: 60px;
+    font-weight: $font-weight-base;
+    padding-left: $spacer;
+    padding-right: $spacer;
+
+    &:last-child {
+      height: 30px;
+      justify-content: center;
+    }
+  }
+
+  .details {
+    margin-left: 10px;
+    margin-top: 7px;
+
+    .text {
+      font-size: $font-size-sm;
+      color: #ddd;
+    }
+  }
+}
+
+.support {
+  &::after {
+    @media (max-width: breakpoint-max(xs)) {
+      right: 102px;
+    }
+  }
+
+  :global(.badge) {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  button {
+    display: flex;
+    padding: 5px 10px;
+    font-weight: $font-weight-base;
+
+    &:last-child {
+      height: 30px;
+      justify-content: center;
+    }
+
+    .details {
+      margin-left: 7px;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.account {
+  width: 180px !important;
+
+  section {
+    padding: 5px 10px;
+    font-weight: normal;
+  }
+
+  button {
+    padding: 7px 10px;
+    font-weight: $font-weight-thin;
+
+    a {
+      color: $white;
+      padding: 0;
+    }
+
+    i {
+      margin-right: 3px;
+    }
+  }
+}
+
+.settings {
+  border-radius: 3px !important;
+  width: 122px !important;
+  text-align: center !important;
+  min-width: auto;
+  left: -40px !important;
+
+  h6 {
+    color: #fff;
+  }
+
+  &::after {
+    right: 53px !important;
+    left: auto;
+  }
+}
+
+.count {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  bottom: 8px;
+  right: 5px;
+  background: $green; 
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+}
+
+.notificationsMenu {
+  padding: 0 12px;
+  > a {
+    background-color: transparent!important;    
+  }
+
+  :global .dropdown-menu {
+    left: auto !important;
+    right: 0 !important;
+    top: $navbar-height !important;
+  }
+
+  ::after {
+    padding: 0;
+    margin: 0;
+  }
+
+  @media(max-width: 580px) {
+    :global .dropdown-menu {
+      right: -50% !important;
+    }
+  }
+}
+
+.accountCheck {
+  color: $icon-color;
+  font-weight: $font-weight-normal;
+  font-size: 1rem;
+}
+
+.notificationsWrapper {
+  width: min-content;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 40px;
+  width: 40px;
+  background: $blue;
+  font-weight: 600;
+  font-size: 18px;
+  margin-right: 10px;
+  img {
+    height: 100%;
+  }
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin: auto 6px;
+  border-radius: 50%;
+  color: #1B1E3F;
+  font-size: 12px;
+  font-weight: $font-weight-bold;
+}
+
+.burger {
+  align-self: end;
+  padding-left: 0;
+}
+
+.headerIcon {
+  fill: $icon-color;
+}
+
+.settingsIcon {
+  fill: $icon-blue;
+}
+
+.searchForm {
+  min-width: 255px;
+}
+
+.inputGroupText {
+  background: #12142B;
+  opacity: .8;
+}

@@ -1,0 +1,44 @@
+Please transform my optimization group description into a JSON format according to the following template. Ensure the description adheres to the structure outlined below, including all necessary and optional fields:
+{
+  "group_id": "Specify group ID, generated automatically if unspecified, starting from 1",
+  "group_type": "Specify 'Sequential' or 'Parallel'",
+  "tasks": [
+    {
+      "task_name": "Choose from 'HPOXGBoost', 'HPOSVM', 'HPORes18'",
+      "variables": {
+        "variable_name": {"type": "Specify type, e.g., 'categorical', 'integer', 'continuous'", "range or choices accroding to type": [Specify range or choices]}
+      },
+      "objectives": {
+        "objective_name": {"type": "Specify 'minimize' or 'maximize'"}
+      },
+      "fidelities": {
+        "fidelity_name": {"type": "Specify type, e.g., 'categorical', 'integer', 'continuous'", "range or choices according to type": [Specify range or choices], "default": "Specify default value"}
+      },
+      "workloads": "Mandatory, specify the name of the workloads",
+      "budget": "Mandatory, specify the budget"
+    }
+  ],
+  "algorithm": {
+    "name": "Specify algorithm name, default if unspecified is 'BO'",
+    "parameters": {
+      "parameter_name": "Specify parameter value, e.g., 'max_iter': 100"
+    }
+  },
+  "auxiliary": {
+    "selection_criteria": "Optional, specify criteria",
+    "using_stage": "Optional, specify stage",
+  }
+}
+The above JSON not only specifies the format, but also the names of each field and the requirements for the values. The main requirement for values should not be directly filled into the generated content.
+
+
+Requirements:
+Group ID: Automatically generated, starting from 1.
+Group Type: Mandatory. Indicate whether tasks are to be executed in a 'Sequential' or 'Parallel' manner.
+Tasks: Mandatory. List each task, including mandatory fields like Task Name, Workloads, and Budget, and optional fields like Variables, Objectives, Fidelities. Optional fields' values should be {} if unspecified. 
+Algorithm: Optional. Specify the algorithm name and any parameters. If unspecified, 'BO' will be used as the default algorithm.
+Auxiliary: Optional. Include any additional information if necessary.
+
+Output:
+The output should only have two possibilities: 
+2. If the description omits any mandatory fields  or the provided details contain inconsistencies, you should give an error message indicating the missing or incorrect information and do not generate the JSON structure. For example, if budget not specified, you should just give an error message like "Budget is missing, ...." and not generate the JSON structure.
