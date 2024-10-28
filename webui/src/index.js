@@ -1,26 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import React,  { Suspense } from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import store from './app/store'
 import { Provider } from 'react-redux'
-import ReduxThunk from 'redux-thunk'
-import * as serviceWorker from './serviceWorker';
+import SuspenseContent from './containers/SuspenseContent';
 
-import App from './components/App';
-import reducers from './reducers';
-
-const store = createStore(
-  reducers,
-  applyMiddleware(ReduxThunk)
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  // <React.StrictMode>
+    <Suspense fallback={<SuspenseContent />}>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </Suspense>
+  // </React.StrictMode>
 );
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('root')
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

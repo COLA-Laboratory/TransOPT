@@ -5,12 +5,12 @@ from transopt.datamanager.database import Database
 from transopt.datamanager.lsh import LSHCache
 from transopt.datamanager.minhash import MinHasher
 
-from utils.log import logger
+from transopt.utils.log import logger
 
 
 class DataManager:
     _instance = None
-    _init = False  # 用于保证初始化代码只运行一次
+    _initialized = False  # 用于保证初始化代码只运行一次
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -19,7 +19,7 @@ class DataManager:
         return cls._instance
     
     def __init__(
-        self, db=None, num_hashes=100, char_ngram=5, num_bands=50, random_state=12345
+        self, db=None, num_hashes=100, char_ngram=5, num_bands=25, random_state=12345
     ):
         if not self._initialized:
             if db is None:
@@ -43,28 +43,30 @@ class DataManager:
             self._add_lsh_vector(dataset, dataset_info)
 
     def _add_lsh_vector(self, dataset_name, dataset_info):
-        vector = self._construct_vector(dataset_name, dataset_info)
+        vector = self._construct_vector(dataset_info)
         self.lsh_cache.add(dataset_name, vector)
 
-    def _construct_vector(self, dataset_name, dataset_info):
+    def _construct_vector(self, dataset_info):
         try:
-            num_variables = dataset_info["num_variables"]
-            num_objectives = dataset_info["num_objectives"]
+            num_variables = dataset_info.get("num_variables", len(dataset_info["variables"]))
+            num_objectives = dataset_info.get("num_objectives", len(dataset_info["objectives"]))
 
             variables = dataset_info["variables"]
             variable_names = " ".join([var["name"] for var in variables])
-            return (dataset_name, variable_names, num_variables, num_objectives)
+            
+            task_name = dataset_info["additional_config"]['problem_name']
+            return (task_name, variable_names, num_variables, num_objectives)
         except KeyError:
             logger.error(
                 f"""
-                Dataset {dataset_name} does not have the required information. 
+                Dataset does not have the required information. 
                 (num_variables, num_objectives, variables)
                 """
             )
             return None
 
-    def search_similar_datasets(self, dataset_name, problem_config):
-        vector = self._construct_vector(dataset_name, problem_config)
+    def search_similar_datasets(self, problem_config):
+        vector = self._construct_vector(problem_config)
         similar_datasets = self.lsh_cache.query(vector)
         return similar_datasets
 
@@ -86,7 +88,9 @@ class DataManager:
 
     def create_dataset(self, dataset_name, dataset_info, overwrite=True):
         self.db.create_table(dataset_name, dataset_info, overwrite)
-        self._add_lsh_vector(dataset_name, dataset_info)
+        
+        dataset_info_extended = self.db.query_dataset_info(dataset_name)
+        self._add_lsh_vector(dataset_name, dataset_info_extended)
 
     def insert_data(self, dataset_name, data):
         return self.db.insert_data(dataset_name, data)
@@ -95,6 +99,8 @@ class DataManager:
         return self.db.remove_table(dataset_name)
 
     def teardown(self):
+        self._instance = None
+        self._initialized = False
         self.db.close()
 
 

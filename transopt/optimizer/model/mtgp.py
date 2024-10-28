@@ -59,7 +59,7 @@ class MTGP(GP):
         self,
         kernel: Kern = None,
         noise_variance: float = 1.0,
-        normalize: bool = True,
+        normalize: bool = False,
         **options: dict,
     ):
         super().__init__(kernel, noise_variance, normalize, **options)

@@ -5,7 +5,7 @@ from typing import Tuple, List
 from sklearn.preprocessing import StandardScaler
 
 from GPy.models import GPRegression
-from GPy.kern import RBF, Kern
+from GPy.kern import RBF, Kern, Matern32
 
 from transopt.optimizer.model.model_base import  Model
 from transopt.optimizer.model.utils import is_pd, nearest_pd
@@ -18,7 +18,7 @@ class GP(Model):
         self,
         kernel: Kern = None,
         noise_variance: float = 1.0,
-        normalizer: bool = False,
+        normalize = False,
         **options: dict
     ):
         """Initialize the Method.
@@ -32,14 +32,11 @@ class GP(Model):
             **options: Training arguments for `GPy.models.GPRegression`.
         """
         super().__init__()
-        self._kernel = kernel if kernel is not None else RBF(1)
+        self._kernel = kernel if kernel is not None else None
 
         self._noise_variance = np.array(noise_variance)
         self._gpy_model = None
 
-        self._normalize = normalizer
-        self._x_normalizer = StandardScaler() if normalizer else None
-        self._y_normalizer = StandardScaler() if normalizer else None
 
         self._options = options
 
@@ -47,16 +44,6 @@ class GP(Model):
     def kernel(self):
         """Return GPy kernel in the normalized space."""
         return self._kernel
-
-    @property
-    def x_normalizer(self):
-        """Return the x-normalizer of the data."""
-        return self._x_normalizer
-
-    @property
-    def y_normalizer(self):
-        """Return the y-normalizer of the data."""
-        return self._y_normalizer
 
     @property
     def noise_variance(self):
@@ -104,11 +91,9 @@ class GP(Model):
         _X = np.copy(self._X)
         _y = np.copy(self._y)
 
-        # if self._normalize:
-        #     _X = self._x_normalizer.fit_transform(_X)
-        #     _y = self._y_normalizer.fit_transform(_y)
 
         if self._gpy_model is None:
+            self._kernel = Matern32(input_dim=_X.shape[1])
             self._gpy_model = GPRegression(
                 _X, _y, self._kernel, noise_var=self._noise_variance
             )
@@ -124,44 +109,19 @@ class GP(Model):
 
             if "verbose" not in optimize_restarts_options:
                 kwargs["verbose"] = False
+            kwargs["messages"] = False
+            kwargs["optimizer"]='lbfgs'
             kwargs["max_iters"] = 2000
 
             try:
-                self._gpy_model.optimize_restarts(**kwargs)
+                self._gpy_model.optimize_restarts(num_restarts=3, **kwargs)
             except np.linalg.linalg.LinAlgError as e:
                 # break
                 print('Error: np.linalg.linalg.LinAlgError')
 
 
-        self._kernel = self._gpy_model.kern.copy()
-        self._noise_variance = self._gpy_model.likelihood.variance.values
-
-    def _denormalize(
-        self, mean: np.ndarray, var: np.ndarray, return_full: bool
-    ) -> Tuple[np.ndarray, np.ndarray]:
-        """Denormalize the mean and variance prediction.
-
-        Args:
-            mean: Mean of the GP prediction. `shape = (n_points, 1)`.
-            var: Variance or covariance of the GP prediction. `shape = (n_points, 1)` or
-                `(n_points, n_points)`
-            return_full: Returns diagonal of covariance matrix if set to `False`.
-
-        Returns:
-            - mean - Normalized mean. `shape = (n_points, 1)`
-            - var - Normalized variance or covariance. `shape = (n_points, 1)` or
-                `(n_points, n_points)`
-        """
-        mean, var = copy.deepcopy(mean), copy.deepcopy(var)
-
-        mean = self._y_normalizer.inverse_transform(mean)
-
-        if return_full & (mean.shape[1] > 1):
-            var = var[..., np.newaxis] * self._y_normalizer.var_
-        else:
-            var *= self._y_normalizer.var_
-
-        return mean, var
+        # self._kernel = self._gpy_model.kern.copy()
+        # self._noise_variance = self._gpy_model.likelihood.variance.values
 
     def predict(
         self, X: np.ndarray, return_full: bool = False, with_noise: bool = False
@@ -170,9 +130,6 @@ class GP(Model):
 
         if self._X is None:
             return mean, var
-
-        # if self._normalize:
-        #     mean, var = self._denormalize(mean, var, return_full=return_full)
 
         return mean, var
 
@@ -192,9 +149,6 @@ class GP(Model):
             cov = self._kernel.K(_X_test)
             var = np.diag(cov)[:, None]
             return mu, cov if return_full else var
-
-        # if self._normalize:
-        #     _X_test = self._x_normalizer.transform(_X_test)
 
         # ensure that no negative variance is predicted
         mu, cov = self._gpy_model.predict(
@@ -226,12 +180,9 @@ class GP(Model):
         if self._X is None:
             return np.zeros(_x.shape)
         _X = self._X.copy()
-        # if self._normalize:
-        #     _x = self._x_normalizer.transform(_x)
-        #     _X = self._x_normalizer.transform(_X)
+
         mu = self._kernel.K(_x, _X) @ self._gpy_model.posterior.woodbury_vector
-        # if self._normalize:
-        #     mu = self._y_normalizer.inverse_transform(mu)
+
         return mu
 
     def predict_posterior_covariance(self, x1, x2) -> np.ndarray:
@@ -255,16 +206,9 @@ class GP(Model):
             cov = self._kernel.K(_X1, _X2)
             return cov
 
-        # if self._normalize:
-        #     _X1 = self._x_normalizer.transform(_X1)
-        #     _X2 = self._x_normalizer.transform(_X2)
-
         cov = self._gpy_model.posterior_covariance_between_points(
             _X1, _X2, include_likelihood=False
         )
-
-        # if self._normalize:
-        #     cov *= self._y_normalizer.var_
 
         return cov
 
@@ -282,9 +226,7 @@ class GP(Model):
             Kernel values at `(x1, x2)`. `shape = (n_points_1, n_points_2)`
         """
         _x1, _x2 = np.copy(x1), np.copy(x2)
-        # if self._normalize and self._X is not None:
-        #     _x1 = self._x_normalizer.transform(_x1)
-        #     _x2 = self._x_normalizer.transform(_x2)
+
         return self._kernel.K(_x1, _x2)
 
     def compute_kernel_diagonal(self, X) -> np.ndarray:
@@ -301,8 +243,7 @@ class GP(Model):
             Kernel diagonal. `shape = (n_points, 1)`
         """
         _x = np.copy(X)
-        # if self._normalize and self._X is not None:
-        #     _x = self._x_normalizer.transform(_x)
+
         return self._kernel.Kdiag(_x).reshape(-1, 1)
 
     def sample(
@@ -328,8 +269,7 @@ class GP(Model):
         return sample
     
     def get_fmin(self):
-        # if self._normalize:
-        #     return np.min(self._y_normalizer.inverse_transform(self._y))
+
         
         return np.min(self._y)
          

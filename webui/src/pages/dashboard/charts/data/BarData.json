@@ -1,8 +1,0 @@
-[
-    { "value": 0.25, "name": "Learning_rate" },
-    { "value": 0.36, "name": "Neuron number" },
-    { "value": 0.76, "name": "Layer number" },
-    { "value": 0.12, "name": "Block number" },
-    { "value": 0.54, "name": "Weight decay" },
-    { "value": 0.72, "name": "Momentum"}
-]

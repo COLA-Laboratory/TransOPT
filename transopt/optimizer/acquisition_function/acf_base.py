@@ -52,7 +52,7 @@ class AcquisitionBase(object):
                 'type': 'continuous',
                 'domain': space[var_name].search_space_range,
             }
-            if space[var_name].type == 'categorical' or 'integer':
+            if space[var_name].type == 'categorical':
                 var_dic['type'] = 'discrete'
 
             opt_space.append(var_dic.copy())

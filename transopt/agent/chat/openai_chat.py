@@ -1,4 +1,6 @@
 import json
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
@@ -276,7 +278,24 @@ class OpenAIChat:
                     "parameters": {},
                 },
             },
-                        
+            
+            {
+                "type": "function",
+                "function": {
+                    "name": "install_package",
+                    "description": "Install a Python package using pip",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "package_name": {
+                                "type": "string",
+                                "description": "The name of the package to install",
+                            },
+                        },
+                        "required": ["package_name"],
+                    },
+                },
+            },      
         ]
                 
         response = self.client.chat.completions.create(
@@ -348,6 +367,7 @@ class OpenAIChat:
             'set_metadata': lambda: self.set_metadata(kwargs['module_name'], kwargs['dataset_name']),
             'run_optimization': self.run_optimization,
             'show_configuration': self.show_configuration,
+            "install_package": lambda: self.install_package(kwargs['package_name']),
         }
         function_to_call = available_functions[function_name]
         return json.dumps({"result": function_to_call()})
@@ -532,3 +552,12 @@ class OpenAIChat:
     def show_configuration(self):
         conf = {'Optimization problem': self.running_config.tasks, 'Optimizer': self.running_config.optimizer, 'Metadata': self.running_config.metadata}
         return dict_to_string(conf)
+    
+    def install_package(self, package_name: str) -> str:
+        """Install a Python package using pip."""
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+            return f"Package '{package_name}' installed successfully."
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to install package '{package_name}': {e}")
+            return f"Failed to install package '{package_name}'. Error: {str(e)}"

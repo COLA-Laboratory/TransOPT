@@ -4,17 +4,18 @@ import time
 from multiprocessing import Manager, Process
 
 import numpy as np
-from agent.chat.openai_chat import OpenAIChat
-from analysis.mds import FootPrint
 
+from transopt.agent.chat.openai_chat import OpenAIChat
 from transopt.agent.config import Config, RunningConfig
 from transopt.agent.registry import *
+from transopt.analysis.parameter_network import plot_network
 from transopt.benchmark.instantiate_problems import InstantiateProblems
 from transopt.datamanager.manager import Database, DataManager
-from transopt.optimizer.construct_optimizer import ConstructOptimizer, ConstructSelector
-from transopt.analysis.parameter_network import plot_network
-from transopt.utils.log import logger
+from transopt.optimizer.construct_optimizer import (ConstructOptimizer,
+                                                    ConstructSelector)
 
+from transopt.utils.log import logger
+from transopt.analysis.mds import FootPrint
 
 class Services:
     def __init__(self, task_queue, result_queue, lock):
@@ -43,15 +44,18 @@ class Services:
     def _initialize_modules(self):
         # import transopt.benchmark.CPD
         # import transopt.benchmark.CPD
+        import transopt.benchmark.HPOOOD
         import transopt.benchmark.HPO
         import transopt.benchmark.synthetic
+        import transopt.benchmark.CSSTuning
         import transopt.optimizer.acquisition_function
         import transopt.optimizer.model
+        import transopt.optimizer.normalizer
         import transopt.optimizer.pretrain
         import transopt.optimizer.refiner
         import transopt.optimizer.sampler
-        import transopt.optimizer.normalizer
         import transopt.optimizer.selector
+        
         
     def get_modules(self):
         basic_info = {}
@@ -318,6 +322,7 @@ class Services:
             "fidelity": ', '.join([d['name'] for d in dataset_info["fidelities"] if 'name' in d]) if dataset_info["fidelities"] else '',
             "workloads": task_set.get_cur_workload(),
             "budget_type": task_set.get_cur_budgettype(),
+            "initial_number": running_config.optimizer['SamplerInitNum'],
             "budget": task_set.get_cur_budget(),
             "seeds": seed,
             "SpaceRefiner": running_config.optimizer['SpaceRefiner'],
@@ -368,7 +373,7 @@ class Services:
         # Create a separate process for each seed
         process_list = []
         for seed in seeds:
-            p = Process(target=self._run_optimize_process, args=(seed,))
+            p = Process(target=self._run_optimize_process, args=(int(seed),))
             process_list.append(p)
             p.start()
         
@@ -392,7 +397,7 @@ class Services:
                 search_space = task_set.get_cur_searchspace()
                 dataset_info, dataset_name = self.construct_dataset_info(task_set, self.running_config, seed=seed)
                 
-                self.data_manager.db.create_table(dataset_name, dataset_info, overwrite=True)
+                self.data_manager.create_dataset(dataset_name, dataset_info, overwrite=True)
                 self.update_process_info(pid, {'dataset_name': dataset_name, 'task': task_set.get_curname(), 'budget': task_set.get_cur_budget()})
 
                 optimizer.link_task(task_name=task_set.get_curname(), search_space=search_space)
@@ -484,8 +489,10 @@ class Services:
                 table_info = self.data_manager.db.query_dataset_info(task_name)
                 objectives = table_info["objectives"]
                 obj = objectives[0]["name"]
-                best_obj = min([d[obj] for d in data])
-                
+                try:
+                    best_obj = min([d[obj] for d in data])
+                except:
+                    pass
                 all_data[str(group_id)].append(best_obj)
 
         return all_data
@@ -498,7 +505,7 @@ class Services:
         table_info = self.data_manager.db.query_dataset_info(task_name)
         objectives = table_info["objectives"]
         ranges = [tuple(var['range']) for var in table_info["variables"]]
-
+        initial_number = table_info["additional_config"]["initial_number"]
         obj = objectives[0]["name"]
         obj_type = objectives[0]["type"]
 
@@ -506,9 +513,9 @@ class Services:
         var_data = [[data[var["name"]] for var in table_info["variables"]] for data in all_data]
         variables = [var["name"] for var in table_info["variables"]]
         ret = {}
-        ret.update(self.construct_footprint_data(task_name, var_data, ranges))
+        ret.update(self.construct_footprint_data(task_name, var_data, ranges, initial_number))
         ret.update(self.construct_trajectory_data(task_name, obj_data, obj_type))
-        self.construct_importance_data(task_name, var_data, obj_data, variables)
+        # ret.update(self.construct_importance_data(task_name, var_data, obj_data, variables))
 
         return ret
 
@@ -528,13 +535,13 @@ class Services:
 
         return ret
 
-    def construct_footprint_data(self, name, var_data, ranges):
+    def construct_footprint_data(self, name, var_data, ranges, initial_number):
         # Initialize the list to store trajectory data and the best value seen so far
         fp = FootPrint(var_data, ranges)
         fp.calculate_distances()
         fp.get_mds()
-        scatter_data = {'Decision vectors': fp._reduced_data[:len(fp.X)], 'Boundary vectors': fp._reduced_data[len(fp.X):]}
-
+        scatter_data = {'Initial vectors': fp._reduced_data[:initial_number], 'Decision vectors': fp._reduced_data[initial_number:len(fp.X)], 'Boundary vectors': fp._reduced_data[len(fp.X):]}
+        # scatter_data = {}
         return {"ScatterData": scatter_data}
     
     def construct_statistic_trajectory_data(self, task_names):
@@ -600,9 +607,10 @@ class Services:
         }
 
         return {"TrajectoryData": [trajectory_data]}
-    
+
     def construct_importance_data(self, name, var_data, obj_data, variables):
-        plot_network(np.array(var_data), np.array(obj_data), variables)
+        # plot_network(np.array(var_data), np.array(obj_data), variables)
+        return {}
 
     def get_configuration(self):
         configuration_info = {}

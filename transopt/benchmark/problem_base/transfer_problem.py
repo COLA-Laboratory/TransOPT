@@ -1,11 +1,10 @@
 import abc
-import ConfigSpace
 import logging
 import numpy as np
 from typing import Union, Dict, List
 
-from benchmark.problem_base.non_tab_problem import NonTabularProblem
-from benchmark.problem_base.tab_problem import TabularProblem
+from transopt.benchmark.problem_base.non_tab_problem import NonTabularProblem
+from transopt.benchmark.problem_base.tab_problem import TabularProblem
 from transopt.remote import ExperimentClient
 from transopt.space.search_space import SearchSpace
 logger = logging.getLogger("TransferProblem")
@@ -232,15 +231,13 @@ class RemoteTransferOptBenchmark(TransferProblem):
     def f(
         self,
         configuration: Union[
-            ConfigSpace.Configuration,
             Dict,
-            List[Union[ConfigSpace.Configuration, Dict]],
+            List[Union[Dict]],
         ],
         fidelity: Union[
             Dict,
-            ConfigSpace.Configuration,
             None,
-            List[Union[ConfigSpace.Configuration, Dict]],
+            List[Union[Dict]],
         ] = None,
         idx: Union[int, None, List[int]] = None,
         **kwargs,

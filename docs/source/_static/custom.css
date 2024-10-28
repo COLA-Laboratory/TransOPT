@@ -1,0 +1,33 @@
+.bd-sidebar-secondary {
+    display: none !important;
+}
+
+/* 让 bd-article 占据 100% 宽度 */
+.bd-main .bd-content {
+    flex-grow: 1;
+    max-width: 100%;
+    width: 100%;
+}
+
+.bd-article-container {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+
+.bd-article {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+.bd-sidebar-primary {
+    flex: 0 0 250px; /* 减小宽度 */
+    max-width: 250px;
+    padding: 0;
+}
+
+.bd-page-width {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}

@@ -44,7 +44,7 @@ class MinHasher:
             # Ensure the input is in bytes for mmh3
             encoded_shingle = shingle.encode("utf-8")
             for i, seed in enumerate(self._seeds):
-                hash_val = mmh3.hash(encoded_shingle, seed) % (2**32)
+                hash_val = mmh3.hash(encoded_shingle, int(seed)) % (2**32)
                 if hash_val < minhashes[i]:
                     minhashes[i] = hash_val
         

@@ -29,6 +29,8 @@ class RunningConfig:
         
     def set_optimizer(self, optimizer):
         self.optimizer = optimizer
+        if 'SamplerInitNum' not in self.optimizer:
+            self.optimizer['SamplerInitNum'] = 11
         self.optimizer['SamplerInitNum'] =  int(self.optimizer['SamplerInitNum'])
 
     def set_metadata(self, metadata):

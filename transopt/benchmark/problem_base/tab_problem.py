@@ -1,15 +1,15 @@
-import os
 import logging
-import ConfigSpace
-import numpy as np
-import ConfigSpace as CS
-from typing import Union, Dict, List
-from urllib.parse import urlparse
-import pandas as pds
+import os
 from pathlib import Path
-from benchmark.problem_base.base import ProblemBase
+from typing import Dict, List, Union
+from urllib.parse import urlparse
+
+import numpy as np
+import pandas as pds
+
+from transopt.benchmark.problem_base.base import ProblemBase
+from transopt.utils.encoding import multitarget_encoding, target_encoding
 from transopt.utils.Read import read_file
-from transopt.utils.encoding import target_encoding, multitarget_encoding
 
 logger = logging.getLogger("TabularProblem")
 
@@ -134,8 +134,8 @@ class TabularProblem(ProblemBase):
 
     def f(
             self,
-            configuration: Union[ConfigSpace.Configuration, Dict, None],
-            fidelity: Union[Dict, ConfigSpace.Configuration, None] = None,
+            configuration: Union[Dict, None],
+            fidelity: Union[Dict, None] = None,
             **kwargs,
     ) -> Dict:
 
@@ -147,8 +147,8 @@ class TabularProblem(ProblemBase):
 
     def objective_function(
             self,
-            configuration: Union[ConfigSpace.Configuration, Dict],
-            fidelity: Union[Dict, ConfigSpace.Configuration, None] = None,
+            configuration: Union[ Dict],
+            fidelity: Union[Dict, None] = None,
             seed: Union[np.random.RandomState, int, None] = None,
             **kwargs,
     ) -> Dict:
@@ -186,15 +186,15 @@ class TabularProblem(ProblemBase):
         return df
 
 
-    def get_configuration_bound(self):
-        configuration_bound = {}
-        for k, v in self.configuration_space.items():
-            if type(v) is ConfigSpace.CategoricalHyperparameter:
-                configuration_bound[k] = [0, len(v.choices) - 1]
-            else:
-                configuration_bound[k] = [v.lower, v.upper]
+    # def get_configuration_bound(self):
+    #     configuration_bound = {}
+    #     for k, v in self.configuration_space.items():
+    #         if type(v) is ConfigSpace.CategoricalHyperparameter:
+    #             configuration_bound[k] = [0, len(v.choices) - 1]
+    #         else:
+    #             configuration_bound[k] = [v.lower, v.upper]
 
-        return configuration_bound
+    #     return configuration_bound
 
     def get_configuration_type(self):
         configuration_type = {}
@@ -204,7 +204,7 @@ class TabularProblem(ProblemBase):
 
     def get_configuration_space(
             self, seed: Union[int, None] = None
-    ) -> CS.ConfigurationSpace:
+    ) :
         """
         Creates a ConfigSpace.ConfigurationSpace containing all parameters for
         the XGBoost Model
@@ -219,27 +219,27 @@ class TabularProblem(ProblemBase):
         ConfigSpace.ConfigurationSpace
         """
         seed = seed if seed is not None else np.random.randint(1, 100000)
-        cs = CS.ConfigurationSpace(seed=seed)
-        variables = []
+        # cs = CS.ConfigurationSpace(seed=seed)
+        # variables = []
 
-        for k,v in self.space_info['variables'].items():
-            lower = v['bounds'][0]
-            upper = v['bounds'][1]
-            if 'continuous' == v['type']:
-                variables.append(CS.UniformFloatHyperparameter(k, lower=lower, upper=upper))
-            elif 'integer' == v['type']:
-                variables.append(CS.UniformIntegerHyperparameter(k, lower=lower, upper=upper))
-            elif 'categorical' == v['type']:
-                variables.append(CS.UniformIntegerHyperparameter(k, lower=lower, upper=upper))
-            else:
-                raise ValueError('Unknown variable type')
+        # for k,v in self.space_info['variables'].items():
+        #     lower = v['bounds'][0]
+        #     upper = v['bounds'][1]
+        #     if 'continuous' == v['type']:
+        #         variables.append(CS.UniformFloatHyperparameter(k, lower=lower, upper=upper))
+        #     elif 'integer' == v['type']:
+        #         variables.append(CS.UniformIntegerHyperparameter(k, lower=lower, upper=upper))
+        #     elif 'categorical' == v['type']:
+        #         variables.append(CS.UniformIntegerHyperparameter(k, lower=lower, upper=upper))
+        #     else:
+        #         raise ValueError('Unknown variable type')
 
-        cs.add_hyperparameters(variables)
-        return cs
+        # cs.add_hyperparameters(variables)
+        # return cs
 
     def get_fidelity_space(
             self, seed: Union[int, None] = None
-    ) -> CS.ConfigurationSpace:
+    ):
         """
         Creates a ConfigSpace.ConfigurationSpace containing all fidelity parameters for
         the XGBoost Benchmark
@@ -254,9 +254,9 @@ class TabularProblem(ProblemBase):
         ConfigSpace.ConfigurationSpace
         """
         seed = seed if seed is not None else np.random.randint(1, 100000)
-        fidel_space = CS.ConfigurationSpace(seed=seed)
+        # fidel_space = CS.ConfigurationSpace(seed=seed)
 
-        return fidel_space
+        # return fidel_space
 
     def get_meta_information(self) -> Dict:
         return {}

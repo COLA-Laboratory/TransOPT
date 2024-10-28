@@ -238,7 +238,9 @@ class Database:
             "continuous": "float",
             "log_continuous": "float",
             "integer": "int",
+            "large_integer": "text",  # Store large integers as text to handle very large values
             "int_exponent": "int",
+            "exp2": "int",
             "categorical": "varchar(50)",
             # 'binary': 'boolean',
         }
@@ -390,19 +392,19 @@ class Database:
             (
                 table_name,
                 problem_name,
-                metadata["dim"],
-                metadata["obj"],
-                metadata["fidelity"],
-                metadata["workloads"],
-                metadata["budget_type"],
-                metadata["budget"],
-                metadata["seeds"],
-                metadata["SpaceRefiner"],
-                metadata["Sampler"],
-                metadata["Pretrain"],
-                metadata["Model"],
-                metadata["ACF"],
-                metadata["Normalizer"],
+                metadata.get("dim", 0),
+                metadata.get("obj", 0),
+                metadata.get("fidelity", ""),
+                metadata.get("workloads", 0),
+                metadata.get("budget_type", ""),
+                metadata.get("budget", 0),
+                metadata.get("seeds", 0),
+                metadata.get("SpaceRefiner", ""),
+                metadata.get("Sampler", ""),
+                metadata.get("Pretrain", ""),
+                metadata.get("Model", ""),
+                metadata.get("ACF", ""),
+                metadata.get("Normalizer", ""),
                 dataset_selectors_json,
             ),
             commit=commit
@@ -654,7 +656,15 @@ class Database:
         if as_dataframe:
             return pd.DataFrame(results, columns=columns)
         else:
-            return [dict(zip(columns, row)) for row in results]
+            # Convert large integer values from string to int if needed
+            converted_results = []
+            for row in results:
+                row_dict = dict(zip(columns, row))
+                for key, value in row_dict.items():
+                    if isinstance(value, str) and value.isdigit() and key in self.large_integer_columns:
+                        row_dict[key] = int(value)
+                converted_results.append(row_dict)
+            return converted_results
 
     def get_num_row(self, table):
         query = f'SELECT COUNT(*) FROM "{table}"'

@@ -1,7 +1,6 @@
 import logging
 import time
 import numpy as np
-import ConfigSpace as CS
 from scipy import sparse
 from typing import Union, Tuple, Dict, List
 from sklearn import pipeline
@@ -176,8 +175,8 @@ class SupportVectorMachine(NonTabularProblem):
         return results
 
     # pylint: disable=arguments-differ
-    def objective_function_test(self, configuration: Union[CS.Configuration, Dict],
-                                fidelity: Union[CS.Configuration, Dict, None] = None,
+    def objective_function_test(self, configuration: Union[Dict],
+                                fidelity: Union[Dict, None] = None,
                                 shuffle: bool = False,
                                 seed: Union[np.random.RandomState, int, None] = None, **kwargs) -> Dict:
         """
@@ -268,7 +267,7 @@ class SupportVectorMachine(NonTabularProblem):
         ])
         return model
 
-    def get_configuration_space(self, seed: Union[int, None] = None) -> CS.ConfigurationSpace:
+    def get_configuration_space(self, seed: Union[int, None] = None):
         """
         Creates a ConfigSpace.ConfigurationSpace containing all parameters for
         the SVM Model
@@ -291,7 +290,7 @@ class SupportVectorMachine(NonTabularProblem):
         return ss
 
 
-    def get_fidelity_space(self, seed: Union[int, None] = None) -> CS.ConfigurationSpace:
+    def get_fidelity_space(self, seed: Union[int, None] = None):
         """
         Creates a ConfigSpace.ConfigurationSpace containing all fidelity parameters for
         the SupportVector Benchmark

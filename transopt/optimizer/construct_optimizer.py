@@ -7,16 +7,36 @@ from transopt.optimizer.optimizer_base.bo import BO
 
 
 def ConstructOptimizer(optimizer_config: dict = None, seed: int = 0) -> BO:
+    
+    # if 'SpaceRefinerParameters' not in optimizer_config:
+    #     optimizer_config['SpaceRefinerParameters'] = {}
+    # if 'SamplerParameters' not in optimizer_config:
+    #     optimizer_config['SamplerParameters'] = {}
+    # if 'ACFParameters' not in optimizer_config:
+    #     optimizer_config['ACFParameters'] = {}
+    # if 'ModelParameters' not in optimizer_config:
+    #     optimizer_config['ModelParameters'] = {}
+    # if 'PretrainParameters' not in optimizer_config:
+    #     optimizer_config['PretrainParameters'] = {}
+    # if 'NormalizerParameters' not in optimizer_config:
+    #     optimizer_config['NormalizerParameters'] = {}
+    # if 'SamplerInitNum' not in optimizer_config: 
+    #     optimizer_config['SamplerInitNum'] = 11
+            
     """Create the optimizer object."""
     if optimizer_config['SpaceRefiner'] == 'None':
         SpaceRefiner = None
     else:
+        if 'SpaceRefinerParameters' not in optimizer_config:
+            optimizer_config['SpaceRefinerParameters'] = {}
         SpaceRefiner = space_refiner_registry[optimizer_config['SpaceRefiner']](optimizer_config['SpaceRefinerParameters'])
         
     
     Sampler = sampler_registry[optimizer_config['Sampler']](optimizer_config['SamplerInitNum'], optimizer_config['SamplerParameters'])
     ACF = acf_registry[optimizer_config['ACF']](config = optimizer_config['ACFParameters'])
-    Model = model_registry[optimizer_config['Model']](config = optimizer_config['ModelParameters'])
+
+    # Model = model_registry[optimizer_config['Model']](config = optimizer_config['ModelParameters'])
+    Model = model_registry[optimizer_config['Model']]()
 
     if optimizer_config['Pretrain'] == 'None':
         Pretrain = None
