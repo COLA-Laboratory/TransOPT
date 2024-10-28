@@ -27,7 +27,7 @@ demo/
 *.egg-info/
 .installed.cfg
 *.egg
-*.png
+
 
 # PyInstaller
 # 通常如果您使用PyInstaller，以下目录应该被忽略
