@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://maopl.github.io/TransOpt-doc/">
-    <img src="https://raw.githubusercontent.com/leopard-ai/betty/main/docs/_static/imgs/logo.svg" alt="" width="40%" align="top">
+    <img src="./docs/source/_static/figures/transopt_logo.jpg" alt="" width="40%" align="top">
   </a>
 </p>
 <p align="center">
@@ -28,6 +28,9 @@
 
 
 <img src="./docs/source/_static/figures/transopt_logo.jpg" alt="TransOpt logo" width="200" height="200" />
+
+
+<img src="" alt="TransOpt logo" width="200" height="200" />
 
 **TranOpt:**
 
@@ -89,11 +92,11 @@ This will open the TransOPT interface in your default web browser at `http://loc
 
 ## Documentation
 
-For more detailed information on configuring and using TransOPT, refer to our full documentation [here](link-to-documentation).
+For more detailed information on configuring and using TransOPT, refer to our full documentation [here](https://maopl.github.io/TransOpt-doc/).
 
 ## Support
 
-For issues, feature requests, or contributions, please visit our [GitHub Issues](link-to-issues) page.
+For issues, feature requests, or contributions, please visit our [Documentation](https://maopl.github.io/TransOpt-doc/) page.
 
 
 ## Citation
@@ -102,7 +105,7 @@ If you find our work helpful to your research, please consider citing our:
 
 ```bibtex
 @software{TransOPT,
-  title = {{TransOPT}: Transfer Optimization System for Bayesian Optimization Using Transfer Learning},
+  title = {{TransOPT}: Tansfer Optimization System For Automated Configuration},
   author = {Author Name and Collaborator Name},
   url = {https://github.com/maopl/TransOPT},
   year = {2024}
