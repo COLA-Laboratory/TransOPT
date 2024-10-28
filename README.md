@@ -1,4 +1,33 @@
-<img src="" alt="TransOpt logo" width="200" height="200" />
+<p align="center">
+  <a href="https://maopl.github.io/TransOpt-doc/">
+    <img src="https://raw.githubusercontent.com/leopard-ai/betty/main/docs/_static/imgs/logo.svg" alt="" width="40%" align="top">
+  </a>
+</p>
+<p align="center">
+  TransOPT: Transfer Optimization System for Bayesian Optimization Using Transfer Learning<br>
+  <a href="https://leopard-ai.github.io/betty/">Docs</a> |
+  <a href="https://leopard-ai.github.io/betty/tutorial/basic/basic.html">Tutorials</a> |
+  <a href="https://github.com/leopard-ai/betty/tree/main/examples">Examples</a> |
+  <a href="https://openreview.net/pdf?id=LV_MeMS38Q9">Paper</a> |
+  <a href="https://github.com/leopard-ai/betty#citation">Citation</a> |
+  <a href="https://www.casl-project.ai/">CASL</a>
+</p>
+
+<div align="center">
+
+  <a href="https://pypi.org/project/betty-ml/">![Version](https://img.shields.io/pypi/v/betty-ml)</a>
+  <a href="https://github.com/leopard-ai/betty/tree/main/test">![Testing](https://img.shields.io/github/actions/workflow/status/leopard-ai/betty/test.yaml?branch=main)</a>
+  [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/leopard-ai/betty/blob/main/LICENSE)
+  <a href="https://arxiv.org/abs/2207.02849">![arXiv](https://img.shields.io/badge/arXiv-2207.02489-b31b1b.svg)</a>
+  <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="code style: black"></a>
+  <a href="https://join.slack.com/t/betty-n2l2441/shared_invite/zt-1ojhxizmt-NTmj2aVi3BuQQ6hjhNBTFQ" target="_blank">
+    <img alt="Slack" src="https://img.shields.io/badge/Slack-Join%20Slack-blueviolet?logo=slack" />
+  </a>
+  
+</div>
+
+
+<img src="./docs/source/_static/figures/transopt_logo.jpg" alt="TransOpt logo" width="200" height="200" />
 
 **TranOpt:**
 
@@ -73,7 +102,7 @@ If you find our work helpful to your research, please consider citing our:
 
 ```bibtex
 @software{TransOPT,
-  title = {{TransOPT}: Tansfer Optimization System For Automated Configuration},
+  title = {{TransOPT}: Transfer Optimization System for Bayesian Optimization Using Transfer Learning},
   author = {Author Name and Collaborator Name},
   url = {https://github.com/maopl/TransOPT},
   year = {2024}
