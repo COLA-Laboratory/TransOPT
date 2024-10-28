@@ -1,0 +1,57 @@
+:root {
+    --brand-1: rgb(53, 162, 235);
+    --brand-2: rgb(53, 162, 235);
+    --brand-3: rgb(53, 162, 235);
+    --marked-color: #111;
+    font-size: 16px;
+    --btn-primary-color: #111;
+  }
+  .ChatApp,
+  .MessageContainer,
+  .Navbar,
+  .Message .Bubble,
+  .QuickReplies,
+  .ChatFooter {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .ChatApp {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  /* .Navbar {
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    box-shadow: none;
+  } */
+
+  /* .Navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000000;
+    color: #000000;
+  } */
+
+  .Navbar-title {
+    color: #8f2020;
+  }
+  .Message.left .Bubble {
+    background-color: rgb(53, 162, 235, 0.3);
+    color: #111;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif; 
+    font-weight: bold; 
+    line-height: 1.5;
+  }
+  .Message.right .Bubble {
+    background-color: rgb(53, 162, 235, 0.3);
+    color: #111;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif; 
+    font-weight: bold; 
+    line-height: 1.5;
+  }
+
+  
