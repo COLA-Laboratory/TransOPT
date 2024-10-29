@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://maopl.github.io/TransOpt-doc/">
-    <img src="./docs/source/_static/figures/transopt_logo.jpg" alt="" width="100%" align="top">
+    <img src="./docs/source/_static/figures/transopt_logo.jpg" alt="" width="40%" align="top">
   </a>
 </p>
 <p align="center">
@@ -26,18 +26,18 @@
 </div>
 
 
-**TranOpt:**
+# Introduction
 
-## Overview
-
-TransOPT is an open-source software platform designed to facilitate the design, benchmarking, and application of transfer learning for Bayesian optimization (TLBO) algorithms through a modular, data-centric framework.
-
-With TranOpt, users can:
-
+**TransOPT** is an open-source software platform designed to facilitate the **design, benchmarking, and application of transfer learning for Bayesian optimization (TLBO)** algorithms through a modular, data-centric framework.
 
 ## Features
 
-...
+- **Access a variety of benchmark problems** with ease to evaluate and compare algorithms.  
+- **Build custom optimization algorithms** as easily as stacking building blocks.  
+- **Leverage historical data** to achieve more efficient and informed optimization.  
+- **Deploy experiments through an intuitive UI** and **monitor results in real-time**.
+
+TransOPT empowers researchers and developers to explore innovative optimization solutions effortlessly, bridging the gap between theory and practical application.
 
 ## Installation
 
