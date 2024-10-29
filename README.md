@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://maopl.github.io/TransOpt-doc/">
-    <img src="./docs/source/_static/figures/transopt_logo.jpg" alt="" width="40%" align="top">
+    <img src="./docs/source/_static/figures/transopt_logo.jpg" alt="" width="100%" align="top">
   </a>
 </p>
 <p align="center">
@@ -10,7 +10,6 @@
   <a href="https://github.com/leopard-ai/betty/tree/main/examples">Examples</a> |
   <a href="https://openreview.net/pdf?id=LV_MeMS38Q9">Paper</a> |
   <a href="https://github.com/leopard-ai/betty#citation">Citation</a> |
-  <a href="https://www.casl-project.ai/">CASL</a>
 </p>
 
 <div align="center">
@@ -27,16 +26,14 @@
 </div>
 
 
-<img src="./docs/source/_static/figures/transopt_logo.jpg" alt="TransOpt logo" width="200" height="200" />
-
-
-<img src="" alt="TransOpt logo" width="200" height="200" />
-
 **TranOpt:**
 
 ## Overview
 
-TransOPT is a sophisticated web-based platform designed to facilitate optimization experiments ...
+TransOPT is an open-source software platform designed to facilitate the design, benchmarking, and application of transfer learning for Bayesian optimization (TLBO) algorithms through a modular, data-centric framework.
+
+With TranOpt, users can:
+
 
 ## Features
 
