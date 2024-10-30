@@ -22,8 +22,6 @@ data/
 var/
 log/
 wheels/
-tests/
-demo/
 *.egg-info/
 .installed.cfg
 *.egg

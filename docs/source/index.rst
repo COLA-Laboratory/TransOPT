@@ -73,7 +73,7 @@ BibTex:
 .. code-block:: bibtex
 
     @ARTICLE{TransOPT,
-      title = {{TransOPT}: Transfer Optimization System For Automated Configuration},
+      title = {{TransOPT}: Transfer Optimization System for Bayesian Optimization Using Transfer Learning},
       author = {Author Name and Collaborator Name},
       url = {https://github.com/maopl/TransOPT},
       year = {2024}
