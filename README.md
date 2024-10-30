@@ -17,11 +17,6 @@
   <a href="https://github.com/leopard-ai/betty/tree/main/test">![Testing](https://img.shields.io/github/actions/workflow/status/leopard-ai/betty/test.yaml?branch=main)</a>
   [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://github.com/peilimao/TransOpt/blob/main/LICENSE)
   <a href="https://arxiv.org/abs/2207.02849">![arXiv](https://img.shields.io/badge/arXiv-2207.02489-b31b1b.svg)</a>
-  <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="code style: black"></a>
-  <a href="https://join.slack.com/t/betty-n2l2441/shared_invite/zt-1ojhxizmt-NTmj2aVi3BuQQ6hjhNBTFQ" target="_blank">
-    <img alt="Slack" src="https://img.shields.io/badge/Slack-Join%20Slack-blueviolet?logo=slack" />
-  </a>
-  
 </div>
 
 
@@ -50,8 +45,6 @@ Before installing TransOPT, you must have the following installed:
 - **Node.js 17.9.1+ and npm 8.11.0+**: These are required to install and build the frontend. [Download Node.js](https://nodejs.org/en/download/)
 
 Please install these prerequisites if they are not already installed on your system.
-
-### Installation
 
 1. Clone the repository:
    ```shell
@@ -107,6 +100,24 @@ For a complete list of available options and more detailed usage instructions, p
 
 
 ## Benchmark Problem
+
+### Synthetic Problem
+
+TransOPT contains more than several synthetic benchmark problems. Here we demonstrate the usage with the Ackley function, which is a widely used benchmark function in optimization.
+
+The Ackley function looks like this:
+
+![Ackley Function](docs/source/_static/figures/visualization/Rastrigin.png)
+
+Here's a simple example of how to use TransOPT to optimize the Ackley function:
+
+### Hyperparameter Optimization Problem
+
+### Configurable Software System Tuning
+
+### RNA Inverse Design
+
+### Protein Inverse Design
 
 
 ## Documentation
