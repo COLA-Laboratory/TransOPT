@@ -11,6 +11,7 @@ from transopt.agent.registry import problem_registry
 from transopt.benchmark.problem_base.non_tab_problem import NonTabularProblem
 from transopt.space.search_space import SearchSpace
 from transopt.space.fidelity_space import FidelitySpace
+from matplotlib import gridspec
 
 
 logger = logging.getLogger("SyntheticBenchmark")
@@ -1117,7 +1118,6 @@ class EllipsoidOptBenchmark(SyntheticProblemBase):
         for x in X:
             temp = x[0] * x[0]
             for i in range(1, d):
-                exponent = 1.0 * i / (d - 1)
                 temp += pow(self.condition, exponent) * x[i] * x[i]
             y = np.append(y, temp)
 
@@ -1468,144 +1468,78 @@ class KatsuuraOptBenchmark(SyntheticProblemBase):
         return ss
 
 
-# def plot_true_function(obj_fun_list, Dim, dtype, Exper_folder=None, plot_type="1D"):
-#     for fun in obj_fun_list:
-#         obj_fun = get_problem(fun, seed=0, Dim=Dim)
+def visualize_function(func_name, n_points=100):
+    """Visualize synthetic benchmark functions in 1D and 2D.
+    
+    Args:
+        func_name (str): Name of the benchmark function
+        n_points (int): Number of points for visualization
+    """
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d import Axes3D
 
-#         if Exper_folder is not None:
-#             if not os.path.exists(f"{Exper_folder}/true_f/{plot_type}/"):
-#                 os.makedirs(f"{Exper_folder}/true_f/{plot_type}/")
-#             name = obj_fun.task_name
-#             if "." in obj_fun.task_name:
-#                 name = name.replace(".", "|")
-#             save_load = f"{Exper_folder}/true_f/{plot_type}/{name}"
+    # Create benchmark instance
+    params = {"input_dim": 2}  # We'll use 2D for visualization
+    benchmark = problem_registry.get(func_name)(
+        task_name="visualization",
+        budget_type="time",
+        budget=100,
+        seed=42,
+        workload=None,
+        params=params
+    )
 
-#         if plot_type == "1D":
-#             fig, ax = plt.subplots(1, 1, figsize=(16, 6))
-#             test_x = np.arange(-1, 1, 0.005, dtype=dtype)
-#             test_x = test_x[:, np.newaxis]
-#             dic_list = []
-#             for i in range(len(test_x)):
-#                 for j in range(Dim):
-#                     dic_list.append({f"x{j}": test_x[i][j]})
-#             test_y = []
-#             for j in range(len(test_x)):
-#                 test_y.append(obj_fun.f(dic_list[j])["f1"])
-#             test_y = np.array(test_y)
-#             ax.plot(test_x, test_y, "r-", linewidth=1, alpha=1)
-#             ax.legend(["True f(x)"])
-#             ax.set_title(fun)
-#             plt.savefig(save_load)
-#             plt.close(fig)
-#         elif plot_type == "2D":
-#             x = np.linspace(-1, 1, 101)
-#             y = np.linspace(-1, 1, 101)
-#             X, Y = np.meshgrid(x, y)
-#             all_sample = np.array(np.c_[X.ravel(), Y.ravel()])
-#             v_name = [f"x{i}" for i in range(Dim)]
-#             dic_list = [dict(zip(v_name, sample)) for sample in all_sample]
-#             Z_true = []
-#             for j in range(len(all_sample)):
-#                 Z_true.append(obj_fun.f(dic_list[j])["f1"])
-#             Z_true = np.asarray(Z_true)
-#             Z_true = Z_true[:, np.newaxis]
-#             Z_true = Z_true.reshape(X.shape)
+    # Create figure
+    fig = plt.figure(figsize=(15, 5))
+    
+    # 1D Plot - 使用set_position调整位置和大小
+    # [left, bottom, width, height]
+    ax1 = fig.add_subplot(121)
+    ax1.set_position([0.05, 0.15, 0.35, 0.7])  # 调整左图的位置和大小
+    
+    x = np.linspace(-5, 5, n_points)
+    y = []
+    for xi in x:
+        config = {"x0": xi, "x1": 0.0}
+        result = benchmark.objective_function(config)
+        y.append(result[list(result.keys())[0]])
+    
+    ax1.plot(x, y, 'b-', linewidth=2)
+    ax1.set_title(f'{func_name} Function (1D)')
+    ax1.set_xlabel('x')
+    ax1.set_ylabel('f(x)')
+    ax1.grid(True)
 
-#             optimizers = obj_fun.optimizers
-#             fig = plt.figure(figsize=(10, 8))
-#             ax = plt.subplot(111)
-#             box = ax.get_position()
-#             ax.set_position([box.x0, box.y0, box.width, box.height * 0.8])
-#             a = plt.contourf(X, Y, Z_true, 100, cmap=plt.cm.summer)
-#             plt.colorbar(a)
-#             plt.title(fun)
-#             plt.draw()
-#             plt.savefig(save_load, dpi=300)
-#             plt.close(fig)
-#         elif plot_type == "3D":
-#             fig = plt.figure()
-#             ax = plt.axes(projection="3d")
-#             x = np.linspace(-1, 1, 101)
-#             y = np.linspace(-1, 1, 101)
-#             X, Y = np.meshgrid(x, y)
-#             all_sample = np.array(np.c_[X.ravel(), Y.ravel()])
-#             v_name = [f"x{i}" for i in range(Dim)]
-#             dic_list = [dict(zip(v_name, sample)) for sample in all_sample]
-#             Z_true = []
-#             for j in range(len(all_sample)):
-#                 Z_true.append(obj_fun.f(dic_list[j])["f1"])
-#             Z_true = np.asarray(Z_true)
-#             Z_true = Z_true[:, np.newaxis]
-#             Z_true = Z_true.reshape(X.shape)
-#             a = ax.plot_surface(X, Y, Z_true, cmap=plt.cm.summer)
-#             plt.colorbar(a)
-#             plt.draw()
-#             plt.savefig(save_load, dpi=300)
-#             plt.close(fig)
+    # 2D Plot - 使用set_position调整位置和大小
+    ax2 = fig.add_subplot(122, projection='3d')
+    ax2.set_position([0.5, 0.1, 0.45, 0.8])  # 调整右图的位置和大小
+    
+    x = np.linspace(-5, 5, n_points)
+    y = np.linspace(-5, 5, n_points)
+    X, Y = np.meshgrid(x, y)
+    Z = np.zeros_like(X)
+    
+    for i in range(n_points):
+        for j in range(n_points):
+            config = {"x0": X[i,j], "x1": Y[i,j]}
+            result = benchmark.objective_function(config)
+            Z[i,j] = result[list(result.keys())[0]]
+    
+    surf = ax2.plot_surface(X, Y, Z, cmap='viridis', 
+                          linewidth=0, antialiased=True)
+    fig.colorbar(surf, ax=ax2, shrink=0.5, aspect=5)
+    
+    ax2.set_title(f'{func_name} Function (2D)')
+    ax2.set_xlabel('x')
+    ax2.set_ylabel('y')
+    ax2.set_zlabel('f(x,y)')
+    
+    plt.savefig(f'{func_name}.png', bbox_inches='tight', dpi=300)
+    plt.close()
 
-
-# def get_problem(fun, seed, Dim):
-#     # 从注册表中获取任务类
-#     task_class = g_problem_registry.get(fun)
-
-#     if task_class is not None:
-#         problem = task_class(
-#             task_name=f"{fun}_{1}",
-#             task_id=1,
-#             budget=100000,
-#             seed=seed,
-#             params={"input_dim": Dim},
-#         )
-#     return problem
-
-
-# if __name__ == "__main__":
-#     Dim = 2
-#     obj_fun_list = [
-#         # 'Sphere',
-#         # 'Rastrigin',
-#         # 'Ackley',
-#         # 'Schwefel',
-#         # 'LevyR',
-#         # 'Griewank',
-#         # 'Rosenbrock',
-#         # 'DropwaveR',
-#         # 'Langermann',
-#         # 'RotatedHyperEllipsoid',
-#         # 'SumOfDifferentPowers',
-#         # 'StyblinskiTang',
-#         # 'Powell',
-#         # 'DixonPrice',
-#         "cp"
-#     ]
-
-
-
-    # from transopt.Benchmark.BenchBase.TransferOptBenchmark import TransferOptBenchmark
-    #
-    # seed=0
-    # test_suits = TransferOptBenchmark(seed=seed)
-    #
-    # for fun in obj_fun_list:
-    #     shift = np.zeros(Dim)
-    #     stretch = np.ones(Dim)
-    #     problem = getProblem(fun, seed, Dim)
-    #     test_suits.add_task(problem)
-    #
-    # test_x = np.arange(-5, 5.05, 0.005, dtype=np.float64)
-    # test_x = test_x[:, np.newaxis]
-    # dic_list = []
-    #
-    # for i in range(len(test_x)):
-    #     for j in range(Dim):
-    #         dic_list.append({f'x{j}':test_x[i][j]})
-    # for i in obj_fun_list:
-    #     test_y = []
-    #     for j in range(len(test_x)):
-    #         test_y.append(test_suits.f(dic_list[j])['f1'])
-    #     test_y = np.array(test_y)
-    #     f, ax = plt.subplots(1, 1, figsize=(16, 6))
-    #     ax.plot(test_x, test_y, 'r-', linewidth=1, alpha=1)
-    #     plt.show()
-    #
-    #     test_suits.roll()
+# Example usage:
+if __name__ == "__main__":
+    # Test visualization with some benchmark functions
+    functions = ["Sphere", "Rastrigin", "Ackley"]
+    for func in functions:
+        visualize_function(func)
