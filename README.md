@@ -101,7 +101,7 @@ Our docs walk you through using TransOPT, web UI and key API points. For an over
 
 
 <p align="center">
-<img src="" width="95%">
+<img src="./docs/source/_static/figures/Transopt_workflow.png" width="95%">
 </p>
 
 
