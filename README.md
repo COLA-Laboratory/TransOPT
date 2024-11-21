@@ -117,7 +117,7 @@ Recent years, Bayesian optimization (BO) has been widely used in various fields,
 <img src="./docs/source/_static/figures/Results.png" width="95%">
 </p>
 
-**Upper-left: ** illustrates the use of a web UI to construct new optimization algorithms by combining different components. **Upper-right:** highlights the application of an LLM agent to effectively manage optimization tasks. **Middle: ** shows various visualization results derived from the optimization processes. **Lower:** presents a performance comparison of different TLBO methods.
+**Upper-left:** illustrates the use of a web UI to construct new optimization algorithms by combining different components. **Upper-right:** highlights the application of an LLM agent to effectively manage optimization tasks. **Middle:** shows various visualization results derived from the optimization processes. **Lower:** presents a performance comparison of different TLBO methods.
 
 
 
