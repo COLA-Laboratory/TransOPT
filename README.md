@@ -107,7 +107,10 @@ Our docs walk you through using TransOPT, web UI and key API points. For an over
 
 # Why use TransOPT?
 
-
+Recent years, Bayesian optimization (BO) has been widely used in various fields, such as hyperparameter optimization, molecular design, and synthetic biology. However, conventional BO is not that efficient, where it conduct every optimization task from scratch while ignoring the experiences gained from previous problem-solving practices. To address this challenge, transfer learning (TL) has been introduced to BO, aiming to leverage auxillary data to improve the optimization efficiency and performance. Despite the potential of TLBO, the usage of TLBO is still limited due to the complexity of advanced TLBO methods. TransOPT, a system that facilitates:
+▶ development of TLBO algorithms;
+▶ benchmarking the performance of TLBO methods; and
+▶ applications of TLBO for downstream tasks.
 
 
 
