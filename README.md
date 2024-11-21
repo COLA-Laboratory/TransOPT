@@ -20,7 +20,7 @@
 </div>
 
 
-# Introduction
+# Welcome to TransOPT!
 
 **TransOPT** is an open-source software platform designed to facilitate the **design, benchmarking, and application of transfer learning for Bayesian optimization (TLBO)** algorithms through a modular, data-centric framework.
 
@@ -33,7 +33,7 @@
 
 TransOPT empowers researchers and developers to explore innovative optimization solutions effortlessly, bridging the gap between theory and practical application.
 
-## Installation
+# [Installation: how to install TransOPT](https://maopl.github.io/TransOpt-doc/installation.html)
 
 TransOPT is composed of two main components: the backend for data processing and business logic, and the frontend for user interaction. Each can be installed as follows:
 
@@ -61,10 +61,6 @@ Please install these prerequisites if they are not already installed on your sys
    ```shell
    $ cd webui && npm install
    ```
-
-
-
-## Quick Start
 
 ### Start the Backend Agent
 
@@ -99,20 +95,25 @@ This command sets up a task named Sphere with 3 variables and 1 objectives, usin
 For a complete list of available options and more detailed usage instructions, please refer to the [CLI documentation](https://maopl.github.io/TransOpt-doc/usage/cli.html).
 
 
-##Why use TransOPT?
+# [Documentation: The TransOPT Process](https://maopl.github.io/TransOpt-doc/)
+
+Our docs walk you through using TransOPT, web UI and key API points. For an overview of the system and workflow for project management, see our documentation [documentation](https://maopl.github.io/TransOpt-doc/).
+
+
+<p align="center">
+<img src="" width="95%">
+</p>
+
+
+# Why use TransOPT?
 
 
 
-## Documentation
-
-For more detailed information on configuring and using TransOPT, refer to our full documentation [here](https://maopl.github.io/TransOpt-doc/).
-
-## Support
-
-For issues, feature requests, or contributions, please visit our [Documentation](https://maopl.github.io/TransOpt-doc/) page.
 
 
-## Citation
+
+
+# Reference & Citation
 
 If you find our work helpful to your research, please consider citing our:
 
