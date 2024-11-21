@@ -5,18 +5,18 @@
 </p>
 <p align="center">
   TransOPT: Transfer Optimization System for Bayesian Optimization Using Transfer Learning<br>
-  <a href="https://leopard-ai.github.io/betty/">Docs</a> |
-  <a href="https://leopard-ai.github.io/betty/tutorial/basic/basic.html">Tutorials</a> |
-  <a href="https://github.com/leopard-ai/betty/tree/main/examples">Examples</a> |
-  <a href="https://openreview.net/pdf?id=LV_MeMS38Q9">Paper</a> |
-  <a href="https://github.com/leopard-ai/betty#citation">Citation</a> |
+  <a href="https://maopl.github.io/TransOpt-doc/">Docs</a> |
+  <a href="https://maopl.github.io/TransOpt-doc/quickstart.html">Tutorials</a> |
+  <a href="https://maopl.github.io/TransOpt-doc/usage/problems.html">Examples</a> |
+  <a href="">Paper</a> |
+  <a href="https://maopl.github.io/TransOpt-doc">Citation</a> |
 </p>
 
 <div align="center">
 
-  <a href="https://github.com/leopard-ai/betty/tree/main/test">![Testing](https://img.shields.io/github/actions/workflow/status/leopard-ai/betty/test.yaml?branch=main)</a>
-  [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://github.com/peilimao/TransOpt/blob/main/LICENSE)
-  <a href="https://arxiv.org/abs/2207.02849">![arXiv](https://img.shields.io/badge/arXiv-2207.02489-b31b1b.svg)</a>
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/python_version-3.10-purple"></a>
+
 </div>
 
 
@@ -26,10 +26,10 @@
 
 ## Features
 
-- **Access a variety of benchmark problems** with ease to evaluate and compare algorithms.  
-- **Build custom optimization algorithms** as easily as stacking building blocks.  
-- **Leverage historical data** to achieve more efficient and informed optimization.  
-- **Deploy experiments through an intuitive UI** and **monitor results in real-time**.
+- **Contains more than 1000 benchmark problems covers diverse range of domains**.  
+- **Build custom optimization algorithms as easily as stacking building blocks**.  
+- **Leverage historical data to achieve more efficient and informed optimization**.  
+- **Deploy experiments through an intuitive web UI and monitor results in real-time**.
 
 TransOPT empowers researchers and developers to explore innovative optimization solutions effortlessly, bridging the gap between theory and practical application.
 
@@ -91,33 +91,16 @@ In addition to the web UI mode, TransOPT also offers a Command Line (CMD) mode f
 To run TransOPT in CMD mode, use the following command:
 
 ```bash
-python transopt/agent/run_cli.py -n MyTask -v 3 -o 2 -m RF -acf UCB -b 300
+python transopt/agent/run_cli.py -n Sphere -v 3 -o 1 -m RF -acf UCB -b 300
 ```
 
-This command sets up a task named MyTask with 3 variables and 2 objectives, using a Random Forest model (RF) and the Upper Confidence Bound (UCB) acquisition function, with a budget of 300 function evaluations.
+This command sets up a task named Sphere with 3 variables and 1 objectives, using a Random Forest model (RF) as surrogate model and the upper confidence bound (UCB) acquisition function, with a budget of 300 function evaluations.
 
 For a complete list of available options and more detailed usage instructions, please refer to the [CLI documentation](https://maopl.github.io/TransOpt-doc/usage/cli.html).
 
 
-## Benchmark Problem
+##Why use TransOPT?
 
-### Synthetic Problem
-
-TransOPT contains more than several synthetic benchmark problems. Here we demonstrate the usage with the Ackley function, which is a widely used benchmark function in optimization.
-
-The Ackley function looks like this:
-
-![Ackley Function](docs/source/_static/figures/visualization/Rastrigin.png)
-
-Here's a simple example of how to use TransOPT to optimize the Ackley function:
-
-### Hyperparameter Optimization Problem
-
-### Configurable Software System Tuning
-
-### RNA Inverse Design
-
-### Protein Inverse Design
 
 
 ## Documentation
